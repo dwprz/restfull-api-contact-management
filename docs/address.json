@@ -1,0 +1,311 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Address API Specification",
+    "version": "1.0.0",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "paths": {
+    "/api/contacts/:contactId/addresses": {
+      "post": {
+        "description": "Create Address API",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/objectAddress"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success create address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/objectResponseAddress"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to create address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "example": "Country is required"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "List Address API",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success To List Address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/objectResponseAddress"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed to list address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "example": "Contact is not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contacts/:contactId/addresses/:addressId": {
+      "put": {
+        "description": "Update Address API",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/objectAddress"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success to update address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/objectResponseAddress"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to update address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "example": "Street is required"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get Address API",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success to get address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/objectResponseAddress"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed to get address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "example": "address is not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success to remove address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed to remove address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "example": "address is not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Authorization": {
+        "name": "Authorization",
+        "in": "header",
+        "schema": {
+          "type": "string",
+          "example": "ias2387hkj"
+        }
+      }
+    },
+    "schemas": {
+      "objectAddress": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "example": "Goatan Street"
+          },
+          "city": {
+            "type": "string",
+            "example": "Northen City"
+          },
+          "district": {
+            "type": "string",
+            "example": "Northen District"
+          },
+          "country": {
+            "type": "string",
+            "example": "Pantura Kingdom"
+          },
+          "postal_code": {
+            "type": "number",
+            "example": 1227
+          }
+        }
+      },
+      "objectResponseAddress": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "street": {
+            "type": "string",
+            "example": "Goatan Street"
+          },
+          "city": {
+            "type": "string",
+            "example": "Northen City"
+          },
+          "district": {
+            "type": "string",
+            "example": "Northen District"
+          },
+          "country": {
+            "type": "string",
+            "example": "Pantura Kingdom"
+          },
+          "postal_code": {
+            "type": "number",
+            "example": 1227
+          }
+        }
+      }
+    }
+  }
+}
