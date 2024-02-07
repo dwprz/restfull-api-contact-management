@@ -4,6 +4,8 @@ import { utilUserTest } from "./util.js";
 import { logger } from "../../src/applications/logging.js";
 import bcrypt from "bcrypt";
 
+// npx jest tests/user/user.test.js
+
 describe("POST /api/users", function () {
   //
   afterEach(async () => await utilUserTest.remove());
@@ -48,6 +50,18 @@ describe("POST /api/users", function () {
       username: "kongleong poseidon",
       password: "12345678",
       name: "kongleong",
+    });
+
+    expect(result.status).toBe(400);
+    expect(result.body.errors).toBeDefined();
+  });
+
+  it("should fail if there are additional properties", async () => {
+    const result = await supertest(app).post("/api/users").send({
+      username: "kongleong poseidon",
+      password: "12345678",
+      name: "kongleong",
+      tambahan: "properti tambahan",
     });
 
     expect(result.status).toBe(400);

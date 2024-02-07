@@ -5,9 +5,9 @@ import { userValidation } from "../validations/user-validation.js";
 import bcrypt from "bcrypt";
 import { v4 as uuidV4 } from "uuid";
 
-const register = async (request) => {
+const register = async (user) => {
   //
-  const user = validation(userValidation.register, request);
+  user = validation(userValidation.register, user);
 
   const countUser = await prismaClient.user.count({
     where: { username: user.username },
@@ -61,9 +61,9 @@ const get = async (username) => {
   return user;
 };
 
-const update = async (request) => {
+const update = async (user) => {
   //
-  const user = validation(userValidation.update, request);
+  user = validation(userValidation.update, user);
 
   const countUser = await prismaClient.user.count({
     where: { username: user.username },
