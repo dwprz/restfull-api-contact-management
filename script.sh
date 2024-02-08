@@ -33,3 +33,16 @@ jest -i
 
 # Install Supertest For Express
 npm i --save-dev supertest @types/supertest
+
+# Run MySQL Docker Compose
+cd docker
+docker compose create
+docker compose start
+docker compose down
+# If MySQL Client In Docker
+docker exec -it mysql-contact-management mysql -u root -p
+
+# Migrate Prisma
+npx prisma migrate dev --create-only
+# Next
+npx prisma migrate dev 

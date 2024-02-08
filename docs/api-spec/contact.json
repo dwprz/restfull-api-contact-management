@@ -1,0 +1,329 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Contact API Specification",
+    "version": "1.0.0",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "paths": {
+    "/api/contacts": {
+      "post": {
+        "description": "Create Contact API",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/requestBodyContact"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/response200"
+          },
+          "400": {
+            "description": "Failed to create contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "example": "Email is not valid format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Search Contact API",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          },
+          {
+            "name": "name",
+            "description": "Search by first_name or last_name, using like, optional",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "Kongleong"
+            }
+          },
+          {
+            "name": "email",
+            "description": "Search by email using like, optional",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "kongleong@gmail.com"
+            }
+          },
+          {
+            "name": "phone",
+            "description": "Search by phone using like, optional",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "6281234567"
+            }
+          },
+          {
+            "name": "page",
+            "description": "number of page, default 1",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "default": 1,
+              "example": 10
+            }
+          },
+          {
+            "name": "size",
+            "description": "size per page, default 10",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "default": 10,
+              "example": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success search contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/objectContact"
+                      }
+                    },
+                    "paging": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "number",
+                          "example": 1
+                        },
+                        "total_page": {
+                          "type": "number",
+                          "example": 3
+                        },
+                        "total_item": {
+                          "type": "number",
+                          "example": 30
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contacts/:contactId": {
+      "description": "Update Contact API",
+      "put": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/requestBodyContact"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/response200"
+          },
+          "400": {
+            "description": "Failed to update contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "example": "Email is not valid format"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get Contact API",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/response200"
+          },
+          "400": {
+            "description": "Failed to get contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "example": "Contact is not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Remove Contact API",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Authorization"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success remove contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": "OK"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed to remove contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "string",
+                      "example": "Contact is not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "objectContact": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Kongleong"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Poseidon"
+          },
+          "email": {
+            "type": "string",
+            "example": "kongleong@gmail.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "6281234567"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "Authorization": {
+        "name": "Authorization",
+        "in": "header",
+        "schema": {
+          "type": "string",
+          "example": "sjdkj2837hau"
+        }
+      }
+    },
+    "responses": {
+      "response200": {
+        "description": "Success create contact",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/components/schemas/objectContact"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "requestBodyContact": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string",
+                  "example": "Kongleong"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Poseidon"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "kongleong@gmail.com"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+62812345678"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

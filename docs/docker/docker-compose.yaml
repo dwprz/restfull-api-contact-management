@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  mysql-contact-management:
+    image: mysql:8.2.0
+    container_name: mysql-contact-management
+    ports:
+      - "3306:3306"
+    env_file:
+      - ../../.env
