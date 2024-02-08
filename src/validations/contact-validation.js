@@ -15,7 +15,7 @@ const get = Joi.number().positive().integer().required();
 
 const update = Joi.object({
   id: Joi.number().positive().integer().required(),
-  first_name: Joi.string().trim().max(100).pattern(pattern).required(),
+  first_name: Joi.string().trim().max(100).pattern(pattern).optional(),
   last_name: Joi.string().trim().max(100).pattern(pattern).optional(),
   email: Joi.string().email().trim().max(100).pattern(pattern).optional(),
   phone: Joi.string().pattern(patternPhone).trim().optional(),

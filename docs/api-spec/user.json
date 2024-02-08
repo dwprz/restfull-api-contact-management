@@ -274,11 +274,9 @@
             }
           }
         }
-      }
-    },
-    "/api/users/logout": {
-      "description": "Logout User API",
+      },
       "delete": {
+        "description": "Logout User API",
         "parameters": [
           {
             "name": "Authorization",

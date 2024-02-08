@@ -272,8 +272,8 @@
             "example": "Pantura Kingdom"
           },
           "postal_code": {
-            "type": "number",
-            "example": 1227
+            "type": "string",
+            "example": "1227"
           }
         }
       },

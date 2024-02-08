@@ -1,17 +1,16 @@
 import supertest from "supertest";
 import app from "../../src/applications/app.js";
 import { utilUserTest } from "./util.js";
-import { logger } from "../../src/applications/logging.js";
 import bcrypt from "bcrypt";
 
 // npx jest tests/user/user.test.js
 
-describe("POST /api/users", function () {
+describe("POST /api/users/register", function () {
   //
   afterEach(async () => await utilUserTest.remove());
 
-  it("have to create a new user", async () => {
-    const result = await supertest(app).post("/api/users").send({
+  it("should successful register user", async () => {
+    const result = await supertest(app).post("/api/users/register").send({
       username: "kongleong poseidon",
       password: "12345678",
       name: "kongleong",
@@ -24,7 +23,7 @@ describe("POST /api/users", function () {
   });
 
   it("must be rejected if the request is invalid", async () => {
-    const result = await supertest(app).post("/api/users").send({
+    const result = await supertest(app).post("/api/users/register").send({
       username: "true?'Hello world': 'hello'",
       password: "true?'Hello world': 'hello'",
       name: "true?'Hello world': 'hello'",
@@ -35,7 +34,7 @@ describe("POST /api/users", function () {
   });
 
   it("should be rejected if the user already exists", async () => {
-    let result = await supertest(app).post("/api/users").send({
+    let result = await supertest(app).post("/api/users/register").send({
       username: "kongleong poseidon",
       password: "12345678",
       name: "kongleong",
@@ -46,7 +45,7 @@ describe("POST /api/users", function () {
     expect(result.body.data.name).toBe("kongleong");
     expect(result.body.data.password).toBeUndefined();
 
-    result = await supertest(app).post("/api/users").send({
+    result = await supertest(app).post("/api/users/register").send({
       username: "kongleong poseidon",
       password: "12345678",
       name: "kongleong",
@@ -57,7 +56,7 @@ describe("POST /api/users", function () {
   });
 
   it("should fail if there are additional properties", async () => {
-    const result = await supertest(app).post("/api/users").send({
+    const result = await supertest(app).post("/api/users/register").send({
       username: "kongleong poseidon",
       password: "12345678",
       name: "kongleong",
@@ -209,7 +208,7 @@ describe("PATCH /api/users/current", function () {
   });
 });
 
-describe("DELETE /api/users/logout", function () {
+describe("DELETE /api/users/current", function () {
   //
   beforeEach(async () => await utilUserTest.create());
 
@@ -217,16 +216,16 @@ describe("DELETE /api/users/logout", function () {
 
   it("should successfully logout the user", async () => {
     const result = await supertest(app)
-      .delete("/api/users/logout")
+      .delete("/api/users/current")
       .set("Authorization", "example");
 
     expect(result.status).toBe(200);
-    expect(result.body.data.username).toBe("kongleong poseidon");
+    expect(result.body.data).toBe("OK");
   });
 
   it("should fail if authorization is invalid", async () => {
     const result = await supertest(app)
-      .delete("/api/users/logout")
+      .delete("/api/users/current")
       .set("Authorization", " ");
 
     expect(result.status).toBe(401);

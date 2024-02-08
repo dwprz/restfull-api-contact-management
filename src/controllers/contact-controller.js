@@ -1,11 +1,14 @@
-import { contactService } from "../services/contact-service";
+import { contactService } from "../services/contact-service.js";
 
 const create = async (req, res, next) => {
   try {
     //
-    const username = req.user.username;
+    const {
+      user: { username },
+      body: contact,
+    } = req;
 
-    const result = await contactService.create(username, req.body);
+    const result = await contactService.create(username, contact);
     res.status(200).json({ data: result });
     //
   } catch (error) {
@@ -16,11 +19,12 @@ const create = async (req, res, next) => {
 const get = async (req, res, next) => {
   try {
     //
-    const { user, params } = req;
+    const {
+      user: { username },
+      params: { contactId },
+    } = req;
 
-    const contactId = Number(params.contactId);
-
-    const result = await contactService.get(user, contactId);
+    const result = await contactService.get(username, contactId);
     res.status(200).json({ data: result });
     //
   } catch (error) {
@@ -34,12 +38,12 @@ const update = async (req, res, next) => {
     const {
       user: { username },
       params: { contactId },
-      body,
+      body: contact,
     } = req;
 
-    body.id = contactId;
+    contact.id = contactId;
 
-    const result = await contactService.update(username, body);
+    const result = await contactService.update(username, contact);
     res.status(200).json({ data: result });
     //
   } catch (error) {
@@ -53,7 +57,6 @@ const remove = async (req, res, next) => {
     const {
       user: { username },
       params: { contactId },
-      body,
     } = req;
 
     await contactService.remove(username, contactId);

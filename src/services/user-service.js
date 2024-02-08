@@ -80,7 +80,10 @@ const update = async (user) => {
   const result = await prismaClient.user.update({
     where: { username: user.username },
     data: data,
+    select: { username: true, name: true },
   });
+
+  console.log(result);
 
   return result;
 };
@@ -98,7 +101,6 @@ const logout = async (username) => {
   return await prismaClient.user.update({
     where: { username: user.username },
     data: { token: null },
-    select: { username: true },
   });
 };
 

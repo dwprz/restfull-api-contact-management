@@ -1,7 +1,6 @@
 import supertest from "supertest";
 import { utilContactTest } from "./util.js";
 import app from "../../src/applications/app.js";
-import { logger } from "../../src/applications/logging.js";
 import { utilUserTest } from "../user/util.js";
 
 // npx jest tests/contact/contact.test.js
@@ -178,19 +177,6 @@ describe("PUT /api/contacts/:contactId", function () {
       .set("Authorization", "example")
       .send({
         first_name: "new name",
-      });
-
-    expect(result.status).toBe(400);
-    expect(result.body.errors).toBeDefined();
-  });
-
-  it("should fail if input without first_name", async () => {
-    const { id } = await utilContactTest.get();
-    const result = await supertest(app)
-      .put(`/api/contacts/${id}`)
-      .set("Authorization", "example")
-      .send({
-        phone: "+628123456789"
       });
 
     expect(result.status).toBe(400);

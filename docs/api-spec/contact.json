@@ -135,7 +135,7 @@
         }
       }
     },
-    "/api/contacts/:id": {
+    "/api/contacts/:contactId": {
       "description": "Update Contact API",
       "put": {
         "parameters": [
@@ -317,7 +317,7 @@
                 },
                 "phone": {
                   "type": "string",
-                  "example": "6281234567"
+                  "example": "+62812345678"
                 }
               }
             }

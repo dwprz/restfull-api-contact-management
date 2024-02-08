@@ -1,6 +1,5 @@
-import { response } from "express";
 import { prismaClient } from "../applications/database.js";
-import { ResponseError } from "../errors/response-error";
+import { ResponseError } from "../errors/response-error.js";
 import { contactValidation } from "../validations/contact-validation.js";
 import { validation } from "../validations/validation.js";
 
@@ -22,14 +21,14 @@ const create = async (username, contact) => {
   });
 };
 
-const get = async (user, contactId) => {
+const get = async (username, contactId) => {
   //
   contactId = validation(contactValidation.get, contactId);
 
   const result = await prismaClient.contact.findUnique({
     where: {
       id: contactId,
-      username: user.username,
+      username: username,
     },
     select: {
       id: true,
@@ -117,14 +116,14 @@ const search = async (request) => {
     skip: skip,
   });
 
+  if (contacts.length == 0)
+    throw new ResponseError(404, "Contact is not found");
+
   const totalItem = await prismaClient.contact.count({
     where: {
       AND: filters,
     },
   });
-
-  if (contacts.length == 0)
-    throw new ResponseError(404, "Contact is not found");
 
   return {
     data: contacts,
